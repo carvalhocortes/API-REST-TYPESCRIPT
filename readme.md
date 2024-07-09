@@ -21,7 +21,7 @@ docker-compose up --build
 
 # Para testes
 
-[Aqui](https://1drv.ms/u/s!AtX-17N2_QZap7Yh_1joLQgNNLb8Mw?e=E4rK3E) temos arquivos do postman para realizar os testes da API.
+[Aqui](https://drive.google.com/file/d/1ehwOB1Jk4HyV0ei12yeu5nq82HIz1pLb/view?usp=sharing) temos arquivos do postman para realizar os testes da API.
 
 # Documentação
 
