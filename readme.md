@@ -33,4 +33,6 @@ Primeiro passo é fazer o build.
 node rum docs
 ```
 
-Será salvo na raiz do projeto um arquivo `redoc-static.html` que conterá toda documentação.
+Vai ser aberto um host para ver os arquivos no navegador.
+
+[localhost](http://localhost:8080/)
