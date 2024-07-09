@@ -1,0 +1,23 @@
+apis:
+  mecanizou@1.0.0:
+    root: ./docs/openapi.yaml
+
+extends:
+  - recommended
+
+theme:
+  openapi:
+    generateCodeSamples:
+      languages:
+        - lang: curl
+        - lang: Node.js
+        - lang: Python
+    hideDownloadButton: true
+    htmlTemplate: ./docs/template/template.hbs
+    theme:
+      spacing:
+        unit: 5
+        sectionVertical: 20
+      typography:
+        fontSize: 16px
+    scrollYOffset: 70

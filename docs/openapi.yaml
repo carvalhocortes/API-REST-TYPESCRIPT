@@ -1,0 +1,312 @@
+openapi: "3.1.0"
+
+info:
+  title: Teste Mecanizou
+  description: API REST com end points para um CRUD de uma oficina e rota para buscar oficinas por proximidade geográficas.
+  version: 2.0.0
+
+servers:
+  - url: http://localhost:3000/
+    description: Servidor de testes
+
+tags:
+  - name: Oficinas
+    description: As rotas não necessitam de autorização para serem utilizadas
+
+paths:
+  /garages:
+    get:
+      tags:
+        - "Oficinas"
+      description: Busca todas as oficinas salvas.
+      summary: Busca todas as oficinas
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Garages"
+
+    post:
+      tags:
+        - "Oficinas"
+      description: Salva uma nova oficina com os dados enviados.
+      summary: Cria uma oficina
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateGaragePayload"
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Garage"
+        400:
+          description: "Erro na requisição"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequest"
+
+  /garages/{garageId}:
+    get:
+      tags:
+        - "Oficinas"
+      description: Busca oficina pelo Id enviado.
+      summary: Busca oficina
+      parameters:
+      - name: garageId
+        in: path
+        required: true
+        schema:
+          $ref: "#/components/schemas/GarageId"
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Garage"
+        404:
+          description: "Oficina não encontrada"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFound"
+
+    put:
+      tags:
+        - "Oficinas"
+      description: Atualiza a oficina com os dados enviados.
+      summary: Atualiza a oficina
+      parameters:
+      - name: garageId
+        in: path
+        required: true
+        schema:
+          $ref: "#/components/schemas/GarageId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateGaragePayload"
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Garage"
+        400:
+          description: "Erro na requisição"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequest"
+        404:
+          description: "Oficina não encontrada"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFound"
+
+    delete:
+      tags:
+        - "Oficinas"
+      description: Apaga a oficina enviada.
+      summary: Apaga a oficinas
+      parameters:
+      - name: garageId
+        in: path
+        required: true
+        schema:
+          $ref: "#/components/schemas/GarageId"
+      responses:
+        204:
+          description: "OK"
+        400:
+          description: "Erro na requisição"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequest"
+        404:
+          description: "Oficina não encontrada"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFound"
+
+  /garagesNear:
+    get:
+      tags:
+        - "Oficinas"
+      description: Busca oficinas por proximidade geográfica. É necessário enviar latitude, longitude e rai de busca.
+      summary: Buscar oficinas por proximidade geográfica
+      parameters:
+      - name: lat
+        in: query
+        required: true
+        schema:
+          $ref: "#/components/schemas/Latitude"
+      - name: long
+        in: query
+        required: true
+        schema:
+          $ref: "#/components/schemas/Longitude"
+      - name: radius
+        in: query
+        required: true
+        schema:
+          $ref: "#/components/schemas/Radius"
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Garages"
+        400:
+          description: "Erro na requisição"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequest"
+
+components:
+  schemas:
+    Garage:
+      type: object
+      properties:
+        id:
+          $ref: "#/components/schemas/GarageId"
+        name:
+          $ref: "#/components/schemas/Name"
+        address:
+          $ref: "#/components/schemas/Address"
+        latitude:
+          $ref: "#/components/schemas/Latitude"
+        longitude:
+          $ref: "#/components/schemas/Longitude"
+
+    Address:
+      type: object
+      required:
+        - cep
+        - city
+        - district
+        - number
+        - state
+        - street
+      properties:
+        cep:
+          type: string
+          description: "CEP de onde está localizada da oficina. (somente números, sem ponto e sem traço)"
+          example: "02034000"
+        city:
+          type: string
+          description: "Cidade onde está localizada da oficina."
+          example: "São Paulo"
+        complement:
+          type: string
+          description: "Complemento do endereço"
+          example: "Sala 86"
+        district:
+          type: string
+          description: "Bairro onde está localizada da oficina."
+          example: "Santana"
+        number:
+          type: string
+          description: "Número de onde está localizada da oficina."
+          example: "51"
+        state:
+          type: string
+          description: "Estado onde está localizada da oficina."
+          example: "SP"
+        street:
+          type: string
+          description: "Rua onde está localizada a oficina."
+          example: "Rua Ezequiel Freire"
+
+    Garages:
+      type: array
+      items:
+        $ref: "#/components/schemas/Garage"
+
+    BadRequest:
+      type: object
+      properties:
+        httpCode:
+          type: number
+          example: 400
+        internalError:
+          type: number
+          example: "VALIDATION_ERROR"
+        message:
+          type: string
+          example: "long is a required field"
+
+    NotFound:
+      type: object
+      properties:
+        httpCode:
+          type: number
+          example: 404
+        internalError:
+          type: number
+          example: "NOT_FOUND"
+        message:
+          type: string
+          example: "Garage id: e26ac52f-be53-4ab4-bef5-2cbbafc8304fs not found"
+
+    Name:
+      type: string
+      description: Nome da Oficina
+      example: "Mecanizou"
+
+    Latitude:
+      type: number
+      description: Latitude do ponto central da busca
+      example: -23.5047565
+
+    Longitude:
+      type: number
+      description: Longitude do ponto central da busca
+      example: -46.623657
+
+    Radius:
+      type: integer
+      description: Raio em quilômetros do ponto central da busca
+      example: 1
+
+    GarageId:
+      type: string
+      description: Identificador único da oficina.
+      example: "e26ac52f-be53-4ab4-bef5-2cbbafc8304f"
+
+    UpdateGaragePayload:
+      type: object
+      properties:
+        name:
+          $ref: "#/components/schemas/Name"
+        address:
+          $ref: "#/components/schemas/Address"
+
+    CreateGaragePayload:
+      type: object
+      required:
+        - name
+        - address
+      properties:
+        id:
+          $ref: "#/components/schemas/GarageId"
+        name:
+          $ref: "#/components/schemas/Name"
+        address:
+          $ref: "#/components/schemas/Address"

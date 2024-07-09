@@ -1,0 +1,27 @@
+# deploy files
+.build
+.dist
+
+# package directories
+node_modules
+npm-debug.log
+
+# .VSCode
+.vscode
+.nycrc
+
+# tests and lint
+.sonarlint
+.nyc_output
+.scannerwork
+coverage
+xunit.xml
+
+# macOS
+.DS_Store
+
+# docs
+redoc-static.html
+
+# env
+.env.ts

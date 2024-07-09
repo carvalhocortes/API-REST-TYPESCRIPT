@@ -1,0 +1,59 @@
+<html>
+  <head>
+    <meta charset='utf8' />
+    <title>{{title}}</title>
+    <meta description='{{{templateOptions.metaDescription}}}' />
+    <meta name='viewport' content='width=device-width, initial-scale=1' />
+    <style>
+      body { padding: 0; margin: 0; }
+      header {
+        background: rgb(48, 61, 153);
+        padding: 8px 20px;
+        position: fixed;
+        width: 100%;
+        top: 0;
+        z-index: 1000;
+      }
+      header img {
+        height: 10px;
+        width: 106px;
+      }
+      .fbxFWa {
+        position: relative !important;
+        top: unset !important;
+      }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.8.0/mermaid.min.js" integrity="sha512-LjhAzAg2/5zsgtj/a6rKlyripQs594DkfL+vlA0qwrb/0McmLqIpglzZmrfAdbBURFS7LhFC2yvDDhilSx9UDg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        mermaid.initialize({startOnLoad: true});
+    </script>
+    <header>
+      <img src="https://static.wixstatic.com/media/d15bff_cb915ef2d23d44df9b2ef9671ba2cafd~mv2.png/v1/fill/w_158,h_13,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/mecanizou-logo-dark.png" alt="Logo" />
+    </header>
+    {{{redocHead}}}
+    {{#unless disableGoogleFont}}<link href='https://fonts.googleapis.com/css?family=Montserrat:300,400,700|Roboto:300,400,700' rel='stylesheet' />{{/unless}}
+  </head>
+  <body>
+    {{{redocHTML}}}
+    <script>
+      let renderedMermaidId = 0;
+      const nextId = () => {
+          renderedMermaidId++;
+          return renderedMermaidId;
+      };
+      const renderMermaidDiagrams = () => {
+          let mermaidNodes = document.querySelectorAll("pre > code.language-mermaid");
+          for (const nv of mermaidNodes) {
+              let nextIdz = `mermaid-${nextId()}`;
+              let codz = nv.textContent;
+              mermaid.render(nextIdz, codz).then(({ svg }) => {
+                nv.parentNode.outerHTML = svg;
+              })
+          }
+      };
+      document.addEventListener('DOMContentLoaded', (event) => {
+        renderMermaidDiagrams();
+      });
+    </script>
+  </body>
+</html>
