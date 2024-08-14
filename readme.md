@@ -1,6 +1,4 @@
-# Mecanizou
-
-Para atender ao teste da entrevista da Mecanizou criei uma API REST que roda em um Docker seguindo o que foi requisitado.
+# Fazneod uma API REST
 
 # Antes de testar
 
