@@ -1,4 +1,4 @@
-# Fazneod uma API REST
+# uma API REST
 
 # Antes de testar
 
